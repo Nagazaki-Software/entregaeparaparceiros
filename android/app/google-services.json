@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "851095426021",
+    "project_id": "entregaeparaparceiros-1it8zd",
+    "storage_bucket": "entregaeparaparceiros-1it8zd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851095426021:android:7a8f3cd5f7e7a57fe8550c",
+        "android_client_info": {
+          "package_name": "com.nagazakisoftware.entregaeparaparceiros"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6fSCIts7AQzAmjEniqAkwkVhsEgDINiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
