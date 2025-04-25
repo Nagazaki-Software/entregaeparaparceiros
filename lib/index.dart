@@ -15,3 +15,7 @@ export '/adicionarporudot/adicionarporudot_widget.dart'
     show AdicionarporudotWidget;
 export '/perfil/perfil_widget.dart' show PerfilWidget;
 export '/add_bank/add_bank_widget.dart' show AddBankWidget;
+export '/resumo_do_dia_ver_tudo/resumo_do_dia_ver_tudo_widget.dart'
+    show ResumoDoDiaVerTudoWidget;
+export '/horariodefuncionamento/horariodefuncionamento_widget.dart'
+    show HorariodefuncionamentoWidget;

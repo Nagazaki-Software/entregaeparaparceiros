@@ -53,10 +53,6 @@ class EditarrestauranteModel extends FlutterFlowModel<EditarrestauranteWidget> {
   FocusNode? textFieldFocusNode11;
   TextEditingController? textController11;
   String? Function(BuildContext, String?)? textController11Validator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode12;
-  TextEditingController? textController12;
-  String? Function(BuildContext, String?)? textController12Validator;
 
   @override
   void initState(BuildContext context) {}
@@ -95,8 +91,5 @@ class EditarrestauranteModel extends FlutterFlowModel<EditarrestauranteWidget> {
 
     textFieldFocusNode11?.dispose();
     textController11?.dispose();
-
-    textFieldFocusNode12?.dispose();
-    textController12?.dispose();
   }
 }

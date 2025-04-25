@@ -9,6 +9,45 @@ export 'api_manager.dart' show ApiCallResponse;
 
 const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 
+/// Start bancodedados Group Code
+
+class BancodedadosGroup {
+  static String getBaseUrl() =>
+      'https://southamerica-east1-entregaeparaparceiros-1it8zd.cloudfunctions.net/';
+  static Map<String, String> headers = {};
+  static UpdateKycDocumentsCall updateKycDocumentsCall =
+      UpdateKycDocumentsCall();
+}
+
+class UpdateKycDocumentsCall {
+  Future<ApiCallResponse> call({
+    String? accountId = '',
+    String? fileId = '',
+  }) async {
+    final baseUrl = BancodedadosGroup.getBaseUrl();
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'updateKycDocuments',
+      apiUrl: '${baseUrl}updateKycDocuments',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {
+        'accountId': accountId,
+        'fileId': fileId,
+      },
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+/// End bancodedados Group Code
+
 class GetIPCall {
   static Future<ApiCallResponse> call() async {
     return ApiManager.instance.makeApiCall(
@@ -30,6 +69,71 @@ class GetIPCall {
         response,
         r'''$.ip''',
       ));
+}
+
+class CreateAccountStripeCall {
+  static Future<ApiCallResponse> call({
+    String? uid = '',
+    String? email = '',
+    String? firstName = '',
+    String? lastName = '',
+    int? dobDay,
+    int? dobMonth,
+    int? dobYear,
+    String? addressLine1 = '',
+    String? addressCity = '',
+    String? addressState = '',
+    String? ip = '',
+    String? phone = '',
+    String? addressPostalCode = '',
+    String? cpf = '',
+    String? documentoPDF = '',
+    int? bankAccountNumber,
+    String? bankAccountHolderName = '',
+    String? bankCountry = '',
+    String? bankCurrency = '',
+    String? bankRoutingNumber = '',
+    String? bankAccountHolderType = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'createAccountStripe',
+      apiUrl:
+          'https://southamerica-east1-entregaeparaparceiros-1it8zd.cloudfunctions.net/createAccountStripeCustom',
+      callType: ApiCallType.POST,
+      headers: {},
+      params: {
+        'uid': uid,
+        'email': email,
+        'firstName': firstName,
+        'lastName': lastName,
+        'dobDay': dobDay,
+        'dobMonth': dobMonth,
+        'dobYear': dobYear,
+        'addressLine1': addressLine1,
+        'addressCity': addressCity,
+        'addressState': addressState,
+        'ip': ip,
+        'phone': phone,
+        'addressPostalCode': addressPostalCode,
+        'cpf': cpf,
+        'productDescription': "entregaê para parceiros",
+        'documentoPDF': documentoPDF,
+        'bankAccountNumber': bankAccountNumber,
+        'bankAccountHolderName': bankAccountHolderName,
+        'bankAccountHolderType': bankAccountHolderType,
+        'bankCountry': bankCountry,
+        'bankCurrency': bankCurrency,
+        'bankRoutingNumber': bankRoutingNumber,
+      },
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
 }
 
 class ApiPagingParams {

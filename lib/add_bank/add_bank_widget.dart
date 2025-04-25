@@ -1,15 +1,22 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
-import '/backend/custom_cloud_functions/custom_cloud_function_response_manager.dart';
+import '/backend/backend.dart';
+import '/backend/firebase_storage/storage.dart';
+import '/components/conta_bancaira_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/upload_data.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'add_bank_model.dart';
 export 'add_bank_model.dart';
 
@@ -34,6 +41,13 @@ class _AddBankWidgetState extends State<AddBankWidget> {
     super.initState();
     _model = createModel(context, () => AddBankModel());
 
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.lojista = await queryLojaRecordOnce(
+        singleRecord: true,
+      ).then((s) => s.firstOrNull);
+    });
+
     _model.textController1 ??= TextEditingController();
     _model.textFieldFocusNode1 ??= FocusNode();
 
@@ -57,6 +71,12 @@ class _AddBankWidgetState extends State<AddBankWidget> {
 
     _model.textController8 ??= TextEditingController();
     _model.textFieldFocusNode8 ??= FocusNode();
+
+    _model.textController9 ??= TextEditingController();
+    _model.textFieldFocusNode9 ??= FocusNode();
+
+    _model.textController10 ??= TextEditingController();
+    _model.textFieldFocusNode10 ??= FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
@@ -91,15 +111,23 @@ class _AddBankWidgetState extends State<AddBankWidget> {
               color: FlutterFlowTheme.of(context).primaryText,
               size: 24.0,
             ),
-            onPressed: () {
-              print('IconButton pressed ...');
+            onPressed: () async {
+              context.safePop();
             },
           ),
           title: Text(
             'Adicionar conta bancária',
             style: FlutterFlowTheme.of(context).titleLarge.override(
-                  fontFamily: 'Inter Tight',
+                  font: GoogleFonts.interTight(
+                    fontWeight:
+                        FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                    fontStyle:
+                        FlutterFlowTheme.of(context).titleLarge.fontStyle,
+                  ),
                   letterSpacing: 0.0,
+                  fontWeight:
+                      FlutterFlowTheme.of(context).titleLarge.fontWeight,
+                  fontStyle: FlutterFlowTheme.of(context).titleLarge.fontStyle,
                 ),
           ),
           actions: [],
@@ -115,7 +143,9 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -130,8 +160,21 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
-                                  fontFamily: 'Inter',
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
                                   letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .fontStyle,
                                 ),
                           ),
                         ),
@@ -145,9 +188,17 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                       Text(
                         'Informação pessoal',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Inter',
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontStyle,
                             ),
                       ),
                       Container(
@@ -165,14 +216,40 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                             labelStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
-                                  fontFamily: 'Inter',
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
                                   letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
                                 ),
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
-                                  fontFamily: 'Inter',
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
                                   letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
                                 ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -208,12 +285,36 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                           ),
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Inter',
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
                                     letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
                                   ),
                           cursorColor: FlutterFlowTheme.of(context).primaryText,
                           validator: _model.textController1Validator
                               .asValidator(context),
+                          inputFormatters: [
+                            if (!isAndroid && !isiOS)
+                              TextInputFormatter.withFunction(
+                                  (oldValue, newValue) {
+                                return TextEditingValue(
+                                  selection: newValue.selection,
+                                  text: newValue.text.toCapitalization(
+                                      TextCapitalization.words),
+                                );
+                              }),
+                          ],
                         ),
                       ),
                       Container(
@@ -230,14 +331,40 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                             labelStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
-                                  fontFamily: 'Inter',
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
                                   letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
                                 ),
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
-                                  fontFamily: 'Inter',
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
                                   letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
                                 ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -273,13 +400,238 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                           ),
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Inter',
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
                                     letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
                                   ),
                           keyboardType: TextInputType.emailAddress,
                           cursorColor: FlutterFlowTheme.of(context).primaryText,
                           validator: _model.textController2Validator
                               .asValidator(context),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _model.textController3,
+                          focusNode: _model.textFieldFocusNode3,
+                          autofocus: false,
+                          autofillHints: [AutofillHints.email],
+                          textInputAction: TextInputAction.next,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'CPF',
+                            labelStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
+                                ),
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).alternate,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).primary,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            filled: true,
+                            fillColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                          keyboardType: TextInputType.number,
+                          cursorColor: FlutterFlowTheme.of(context).primaryText,
+                          validator: _model.textController3Validator
+                              .asValidator(context),
+                          inputFormatters: [_model.textFieldMask3],
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _model.textController4,
+                          focusNode: _model.textFieldFocusNode4,
+                          autofocus: false,
+                          autofillHints: [AutofillHints.email],
+                          textInputAction: TextInputAction.next,
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Telefone',
+                            labelStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
+                                ),
+                            hintStyle: FlutterFlowTheme.of(context)
+                                .labelMedium
+                                .override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
+                                  letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).alternate,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).primary,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FlutterFlowTheme.of(context).error,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            filled: true,
+                            fillColor: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                          keyboardType: TextInputType.number,
+                          cursorColor: FlutterFlowTheme.of(context).primaryText,
+                          validator: _model.textController4Validator
+                              .asValidator(context),
+                          inputFormatters: [_model.textFieldMask4],
                         ),
                       ),
                       InkWell(
@@ -304,10 +656,18 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                 headerTextStyle: FlutterFlowTheme.of(context)
                                     .headlineLarge
                                     .override(
-                                      fontFamily: 'Inter Tight',
+                                      font: GoogleFonts.interTight(
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .headlineLarge
+                                            .fontStyle,
+                                      ),
                                       fontSize: 32.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w600,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .headlineLarge
+                                          .fontStyle,
                                     ),
                                 pickerBackgroundColor:
                                     FlutterFlowTheme.of(context)
@@ -362,14 +722,121 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
-                                      fontFamily: 'Inter',
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FontWeight.normal,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.normal,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
                                     ),
                               ),
                             ),
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () async {
+                          final selectedFiles = await selectFiles(
+                            allowedExtensions: ['pdf'],
+                            multiFile: false,
+                          );
+                          if (selectedFiles != null) {
+                            safeSetState(() => _model.isDataUploading = true);
+                            var selectedUploadedFiles = <FFUploadedFile>[];
+
+                            var downloadUrls = <String>[];
+                            try {
+                              selectedUploadedFiles = selectedFiles
+                                  .map((m) => FFUploadedFile(
+                                        name: m.storagePath.split('/').last,
+                                        bytes: m.bytes,
+                                      ))
+                                  .toList();
+
+                              downloadUrls = (await Future.wait(
+                                selectedFiles.map(
+                                  (f) async =>
+                                      await uploadData(f.storagePath, f.bytes),
+                                ),
+                              ))
+                                  .where((u) => u != null)
+                                  .map((u) => u!)
+                                  .toList();
+                            } finally {
+                              _model.isDataUploading = false;
+                            }
+                            if (selectedUploadedFiles.length ==
+                                    selectedFiles.length &&
+                                downloadUrls.length == selectedFiles.length) {
+                              safeSetState(() {
+                                _model.uploadedLocalFile =
+                                    selectedUploadedFiles.first;
+                                _model.uploadedFileUrl = downloadUrls.first;
+                              });
+                            } else {
+                              safeSetState(() {});
+                              return;
+                            }
+                          }
+
+                          _model.photo = _model.uploadedFileUrl;
+                          safeSetState(() {});
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: FlutterFlowTheme.of(context).alternate,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.document_scanner,
+                                color: FlutterFlowTheme.of(context).primary,
+                                size: 24.0,
+                              ),
+                              Text(
+                                'Enviar documentos',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                              ),
+                            ]
+                                .divide(SizedBox(width: 8.0))
+                                .around(SizedBox(width: 8.0)),
                           ),
                         ),
                       ),
@@ -382,16 +849,24 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                       Text(
                         'Endereço',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Inter',
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontStyle,
                             ),
                       ),
                       Container(
                         width: double.infinity,
                         child: TextFormField(
-                          controller: _model.textController3,
-                          focusNode: _model.textFieldFocusNode3,
+                          controller: _model.textController5,
+                          focusNode: _model.textFieldFocusNode5,
                           autofocus: false,
                           autofillHints: [AutofillHints.streetAddressLine1],
                           textInputAction: TextInputAction.next,
@@ -401,14 +876,40 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                             labelStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
-                                  fontFamily: 'Inter',
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
                                   letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
                                 ),
                             hintStyle: FlutterFlowTheme.of(context)
                                 .labelMedium
                                 .override(
-                                  fontFamily: 'Inter',
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .labelMedium
+                                        .fontStyle,
+                                  ),
                                   letterSpacing: 0.0,
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .fontStyle,
                                 ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -444,11 +945,24 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                           ),
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Inter',
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
                                     letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
                                   ),
                           cursorColor: FlutterFlowTheme.of(context).primaryText,
-                          validator: _model.textController3Validator
+                          validator: _model.textController5Validator
                               .asValidator(context),
                         ),
                       ),
@@ -459,8 +973,8 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                             child: Container(
                               width: double.infinity,
                               child: TextFormField(
-                                controller: _model.textController4,
-                                focusNode: _model.textFieldFocusNode4,
+                                controller: _model.textController6,
+                                focusNode: _model.textFieldFocusNode6,
                                 autofocus: false,
                                 autofillHints: [AutofillHints.addressCity],
                                 textInputAction: TextInputAction.next,
@@ -470,14 +984,44 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        fontFamily: 'Inter',
+                                        font: GoogleFonts.inter(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
                                         letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
                                       ),
                                   hintStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        fontFamily: 'Inter',
+                                        font: GoogleFonts.inter(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
                                         letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
                                       ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -516,12 +1060,25 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
-                                      fontFamily: 'Inter',
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
                                       letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
                                     ),
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primaryText,
-                                validator: _model.textController4Validator
+                                validator: _model.textController6Validator
                                     .asValidator(context),
                               ),
                             ),
@@ -530,8 +1087,8 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                             child: Container(
                               width: double.infinity,
                               child: TextFormField(
-                                controller: _model.textController5,
-                                focusNode: _model.textFieldFocusNode5,
+                                controller: _model.textController7,
+                                focusNode: _model.textFieldFocusNode7,
                                 autofocus: false,
                                 autofillHints: [AutofillHints.addressState],
                                 textInputAction: TextInputAction.next,
@@ -541,14 +1098,44 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        fontFamily: 'Inter',
+                                        font: GoogleFonts.inter(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
                                         letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
                                       ),
                                   hintStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        fontFamily: 'Inter',
+                                        font: GoogleFonts.inter(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
                                         letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
                                       ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -587,12 +1174,25 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
-                                      fontFamily: 'Inter',
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
                                       letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
                                     ),
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primaryText,
-                                validator: _model.textController5Validator
+                                validator: _model.textController7Validator
                                     .asValidator(context),
                               ),
                             ),
@@ -606,8 +1206,8 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                             child: Container(
                               width: double.infinity,
                               child: TextFormField(
-                                controller: _model.textController6,
-                                focusNode: _model.textFieldFocusNode6,
+                                controller: _model.textController8,
+                                focusNode: _model.textFieldFocusNode8,
                                 autofocus: false,
                                 autofillHints: [AutofillHints.postalCode],
                                 textInputAction: TextInputAction.next,
@@ -617,14 +1217,44 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        fontFamily: 'Inter',
+                                        font: GoogleFonts.inter(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
                                         letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
                                       ),
                                   hintStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
-                                        fontFamily: 'Inter',
+                                        font: GoogleFonts.inter(
+                                          fontWeight:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontWeight,
+                                          fontStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .fontStyle,
+                                        ),
                                         letterSpacing: 0.0,
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
                                       ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -663,15 +1293,28 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
-                                      fontFamily: 'Inter',
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .fontStyle,
+                                      ),
                                       letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
                                     ),
                                 keyboardType: TextInputType.number,
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primaryText,
-                                validator: _model.textController6Validator
+                                validator: _model.textController8Validator
                                     .asValidator(context),
-                                inputFormatters: [_model.textFieldMask6],
+                                inputFormatters: [_model.textFieldMask8],
                               ),
                             ),
                           ),
@@ -686,8 +1329,21 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                               textStyle: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
-                                    fontFamily: 'Inter',
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
                                     letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
                                   ),
                               hintText: 'País',
                               icon: Icon(
@@ -720,9 +1376,17 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                       Text(
                         'Banking Information',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Inter',
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .fontStyle,
+                              ),
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
+                              fontStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .fontStyle,
                             ),
                       ),
                       Row(
@@ -731,8 +1395,8 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                           Container(
                             width: MediaQuery.sizeOf(context).width * 0.55,
                             child: TextFormField(
-                              controller: _model.textController7,
-                              focusNode: _model.textFieldFocusNode7,
+                              controller: _model.textController9,
+                              focusNode: _model.textFieldFocusNode9,
                               autofocus: false,
                               textInputAction: TextInputAction.next,
                               obscureText: false,
@@ -741,14 +1405,40 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
-                                      fontFamily: 'Inter',
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
                                       letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
                                     ),
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
-                                      fontFamily: 'Inter',
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
                                       letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
                                     ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -786,21 +1476,34 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
-                                    fontFamily: 'Inter',
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
                                     letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
                                   ),
                               keyboardType: TextInputType.number,
                               cursorColor:
                                   FlutterFlowTheme.of(context).primaryText,
-                              validator: _model.textController7Validator
+                              validator: _model.textController9Validator
                                   .asValidator(context),
                             ),
                           ),
                           Container(
                             width: 120.0,
                             child: TextFormField(
-                              controller: _model.textController8,
-                              focusNode: _model.textFieldFocusNode8,
+                              controller: _model.textController10,
+                              focusNode: _model.textFieldFocusNode10,
                               autofocus: false,
                               textInputAction: TextInputAction.next,
                               obscureText: false,
@@ -809,14 +1512,40 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
-                                      fontFamily: 'Inter',
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
                                       letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
                                     ),
                                 hintStyle: FlutterFlowTheme.of(context)
                                     .labelMedium
                                     .override(
-                                      fontFamily: 'Inter',
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .labelMedium
+                                            .fontStyle,
+                                      ),
                                       letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .labelMedium
+                                          .fontStyle,
                                     ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -854,13 +1583,26 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
-                                    fontFamily: 'Inter',
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
                                     letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
                                   ),
                               keyboardType: TextInputType.number,
                               cursorColor:
                                   FlutterFlowTheme.of(context).primaryText,
-                              validator: _model.textController8Validator
+                              validator: _model.textController10Validator
                                   .asValidator(context),
                             ),
                           ),
@@ -877,8 +1619,21 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                           height: 56.0,
                           textStyle:
                               FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Inter',
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
                                     letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
                                   ),
                           hintText: 'Código do banco',
                           icon: Icon(
@@ -911,8 +1666,21 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                           height: 56.0,
                           textStyle:
                               FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Inter',
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
                                     letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
                                   ),
                           hintText: 'Tipo de conta',
                           icon: Icon(
@@ -935,117 +1703,200 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                       ),
                     ].divide(SizedBox(height: 8.0)),
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Theme(
-                        data: ThemeData(
-                          checkboxTheme: CheckboxThemeData(
-                            visualDensity: VisualDensity.compact,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.0),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Theme(
+                          data: ThemeData(
+                            checkboxTheme: CheckboxThemeData(
+                              visualDensity: VisualDensity.compact,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                            ),
+                            unselectedWidgetColor:
+                                FlutterFlowTheme.of(context).alternate,
+                          ),
+                          child: Checkbox(
+                            value: _model.checkboxValue ??= true,
+                            onChanged: (newValue) async {
+                              safeSetState(
+                                  () => _model.checkboxValue = newValue!);
+                            },
+                            side: BorderSide(
+                              width: 2,
+                              color: FlutterFlowTheme.of(context).alternate,
+                            ),
+                            activeColor: FlutterFlowTheme.of(context).primary,
+                          ),
+                        ),
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                8.0, 0.0, 8.0, 0.0),
+                            child: Text(
+                              'Você está concordando nossa política de privacidade.',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
                             ),
                           ),
-                          unselectedWidgetColor:
-                              FlutterFlowTheme.of(context).alternate,
                         ),
-                        child: Checkbox(
-                          value: _model.checkboxValue ??= true,
-                          onChanged: (newValue) async {
-                            safeSetState(
-                                () => _model.checkboxValue = newValue!);
-                          },
-                          side: BorderSide(
-                            width: 2,
-                            color: FlutterFlowTheme.of(context).alternate,
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.exclamationTriangle,
+                          color: Color(0xFFD5121E),
+                          size: 24.0,
+                        ),
+                        Flexible(
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                8.0, 0.0, 8.0, 0.0),
+                            child: Text(
+                              '',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .fontStyle,
+                                    ),
+                                    letterSpacing: 0.0,
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .fontStyle,
+                                  ),
+                            ),
                           ),
-                          activeColor: FlutterFlowTheme.of(context).primary,
                         ),
-                      ),
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              8.0, 0.0, 8.0, 0.0),
-                          child: Text(
-                            'Você está concordando nossa política de privacidade.',
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Inter',
-                                  letterSpacing: 0.0,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   FFButtonWidget(
                     onPressed: () async {
                       _model.getIp = await GetIPCall.call();
 
-                      try {
-                        final result = await FirebaseFunctions.instanceFor(
-                                region: 'southamerica-east1')
-                            .httpsCallable('createAccountStripe')
-                            .call({
-                          "uid": currentUserUid,
-                          "email": currentUserEmail,
-                          "firstName": _model.textController1.text,
-                          "lastName": _model.textController2.text,
-                          "dobDay": functions.retorneAdataBaseadoNotxt(
+                      _model.createAccountStripe =
+                          await CreateAccountStripeCall.call(
+                        uid: currentUserUid,
+                        email: currentUserEmail,
+                        firstName: _model.textController1.text,
+                        lastName: _model.textController2.text,
+                        dobDay: valueOrDefault<int>(
+                          functions.retorneAdataBaseadoNotxt(
                               _model.datePicked!, 'dia'),
-                          "dobMonth": functions.retorneAdataBaseadoNotxt(
+                          28,
+                        ),
+                        dobMonth: valueOrDefault<int>(
+                          functions.retorneAdataBaseadoNotxt(
                               _model.datePicked!, 'mes'),
-                          "dobYear": functions.retorneAdataBaseadoNotxt(
+                          02,
+                        ),
+                        dobYear: valueOrDefault<int>(
+                          functions.retorneAdataBaseadoNotxt(
                               _model.datePicked!, 'ano'),
-                          "addressLine1": _model.textController3.text,
-                          "addressCity": _model.textController4.text,
-                          "addressState": _model.textController5.text,
-                          "addressPostalCode": functions
-                              .retireTudosSomenteNumber(
-                                  _model.textController6.text)
-                              .toString(),
-                          "ip": getJsonField(
-                            (_model.getIp?.jsonBody ?? ''),
-                            r'''$.ip''',
-                          ).toString(),
-                          "bankCountry": _model.dropDownValue1!,
-                          "bankCurrency": 'BRL',
-                          "bankAccountHolderName": _model.textController1.text,
-                          "bankAccountHolderType": () {
-                            if (_model.dropDownValue3 == 'Conta pessoal') {
-                              return 'individual';
-                            } else if (_model.dropDownValue3 ==
-                                'Conta empresarial') {
-                              return 'company';
-                            } else {
-                              return 'null';
-                            }
-                          }(),
-                          "bankAccountNumber":
-                              functions.retireTudosSomenteNumber(
-                                  _model.textController7.text),
-                          "bankRoutingNumber": '110-0000',
-                        });
-                        _model.cloudFunctionzbd =
-                            CreateAccountStripeCloudFunctionCallResponse(
-                          data: result.data,
-                          succeeded: true,
-                          resultAsString: result.data.toString(),
-                          jsonBody: result.data,
-                        );
-                      } on FirebaseFunctionsException catch (error) {
-                        _model.cloudFunctionzbd =
-                            CreateAccountStripeCloudFunctionCallResponse(
-                          errorCode: error.code,
-                          succeeded: false,
-                        );
-                      }
+                          2003,
+                        ),
+                        addressLine1: _model.textController5.text,
+                        addressCity: _model.textController6.text,
+                        addressState: _model.textController7.text,
+                        ip: GetIPCall.ip(
+                          (_model.getIp?.jsonBody ?? ''),
+                        ),
+                        phone:
+                            '+55${functions.retireTudosSomenteNumber(_model.textController4.text).toString()}',
+                        addressPostalCode: functions
+                            .retireTudosSomenteNumber(
+                                _model.textController8.text)
+                            .toString(),
+                        cpf: functions
+                            .retireTudosSomenteNumber(
+                                _model.textController3.text)
+                            .toString(),
+                        documentoPDF: _model.uploadedFileUrl,
+                        bankAccountNumber: 00001234,
+                        bankAccountHolderName:
+                            '${_model.textController1.text} ${_model.textController2.text}',
+                        bankCountry: 'BR',
+                        bankCurrency: 'BRL',
+                        bankRoutingNumber: '110-0000',
+                        bankAccountHolderType: 'individual',
+                      );
 
-                      if (_model.cloudFunctionzbd!.succeeded!) {
-                        context.safePop();
+                      if ((_model.createAccountStripe?.succeeded ?? true)) {
+                        await currentUserReference!
+                            .update(createUsersRecordData(
+                          stripeAccountId: getJsonField(
+                            (_model.createAccountStripe?.jsonBody ?? ''),
+                            r'''$.accountId''',
+                          ).toString(),
+                        ));
+
+                        await _model.lojista!.reference
+                            .update(createLojaRecordData(
+                          stripeAccountId: getJsonField(
+                            (_model.createAccountStripe?.jsonBody ?? ''),
+                            r'''$.accountId''',
+                          ).toString(),
+                        ));
+                        await launchURL(getJsonField(
+                          (_model.createAccountStripe?.jsonBody ?? ''),
+                          r'''$.onboardingUrl''',
+                        ).toString());
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          enableDrag: false,
+                          context: context,
+                          builder: (context) {
+                            return GestureDetector(
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              },
+                              child: Padding(
+                                padding: MediaQuery.viewInsetsOf(context),
+                                child: ContaBancairaWidget(),
+                              ),
+                            );
+                          },
+                        ).then((value) => safeSetState(() {}));
                       }
 
                       safeSetState(() {});
@@ -1060,9 +1911,22 @@ class _AddBankWidgetState extends State<AddBankWidget> {
                       color: FlutterFlowTheme.of(context).primary,
                       textStyle:
                           FlutterFlowTheme.of(context).titleSmall.override(
-                                fontFamily: 'Inter Tight',
+                                font: GoogleFonts.interTight(
+                                  fontWeight: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .fontWeight,
+                                  fontStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .fontStyle,
+                                ),
                                 color: FlutterFlowTheme.of(context).info,
                                 letterSpacing: 0.0,
+                                fontWeight: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .fontWeight,
+                                fontStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .fontStyle,
                               ),
                       elevation: 2.0,
                       borderSide: BorderSide(

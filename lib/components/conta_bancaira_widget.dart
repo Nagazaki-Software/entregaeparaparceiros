@@ -4,27 +4,19 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'produtoadicionadocomsucesso_model.dart';
-export 'produtoadicionadocomsucesso_model.dart';
+import 'conta_bancaira_model.dart';
+export 'conta_bancaira_model.dart';
 
-/// BOTTOM SHEET PRODUTO ADICIONADO COM SUCESSO NA NOSSA PLATAFORMA E LOGO
-/// ESTARA EM SEU CARDAPIO
-class ProdutoadicionadocomsucessoWidget extends StatefulWidget {
-  const ProdutoadicionadocomsucessoWidget({
-    super.key,
-    required this.loja,
-  });
-
-  final DocumentReference? loja;
+/// BOTTOM SHEET CONTA BANCARIA ADICIONADA
+class ContaBancairaWidget extends StatefulWidget {
+  const ContaBancairaWidget({super.key});
 
   @override
-  State<ProdutoadicionadocomsucessoWidget> createState() =>
-      _ProdutoadicionadocomsucessoWidgetState();
+  State<ContaBancairaWidget> createState() => _ContaBancairaWidgetState();
 }
 
-class _ProdutoadicionadocomsucessoWidgetState
-    extends State<ProdutoadicionadocomsucessoWidget> {
-  late ProdutoadicionadocomsucessoModel _model;
+class _ContaBancairaWidgetState extends State<ContaBancairaWidget> {
+  late ContaBancairaModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -35,7 +27,7 @@ class _ProdutoadicionadocomsucessoWidgetState
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => ProdutoadicionadocomsucessoModel());
+    _model = createModel(context, () => ContaBancairaModel());
 
     WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
   }
@@ -59,7 +51,7 @@ class _ProdutoadicionadocomsucessoWidgetState
           color: FlutterFlowTheme.of(context).secondaryBackground,
           boxShadow: [
             BoxShadow(
-              blurRadius: 10.0,
+              blurRadius: 8.0,
               color: Color(0x33000000),
               offset: Offset(
                 0.0,
@@ -71,32 +63,26 @@ class _ProdutoadicionadocomsucessoWidgetState
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(0.0),
             bottomRight: Radius.circular(0.0),
-            topLeft: Radius.circular(16.0),
-            topRight: Radius.circular(16.0),
+            topLeft: Radius.circular(24.0),
+            topRight: Radius.circular(24.0),
           ),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+          padding: EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 12.0, 12.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 width: 60.0,
-                height: 60.0,
+                height: 4.0,
                 decoration: BoxDecoration(
-                  color: Color(0xFFE6F5F0),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.check_circle_rounded,
-                  color: FlutterFlowTheme.of(context).secondary,
-                  size: 36.0,
+                  color: FlutterFlowTheme.of(context).alternate,
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
               Text(
-                'Produto Adicionado com Sucesso!',
+                'Conta Adicionada com Sucesso!',
                 textAlign: TextAlign.center,
                 style: FlutterFlowTheme.of(context).headlineSmall.override(
                       font: GoogleFonts.interTight(
@@ -115,7 +101,7 @@ class _ProdutoadicionadocomsucessoWidgetState
                     ),
               ),
               Text(
-                'Seu produto foi adicionado com sucesso na nossa plataforma e logo estará disponível em seu cardápio.',
+                'Sua conta bancária foi vinculada à sua conta. Agora você pode realizar transferências e pagamentos diretamente do aplicativo.',
                 textAlign: TextAlign.center,
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                       font: GoogleFonts.inter(
@@ -132,11 +118,72 @@ class _ProdutoadicionadocomsucessoWidgetState
                           FlutterFlowTheme.of(context).bodyMedium.fontStyle,
                     ),
               ),
+              Container(
+                width: double.infinity,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Icon(
+                      Icons.account_balance_rounded,
+                      color: FlutterFlowTheme.of(context).primary,
+                      size: 24.0,
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Banco Nacional',
+                            style:
+                                FlutterFlowTheme.of(context).bodyLarge.override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FontWeight.w600,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodyLarge
+                                            .fontStyle,
+                                      ),
+                                      letterSpacing: 0.0,
+                                      fontWeight: FontWeight.w600,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodyLarge
+                                          .fontStyle,
+                                    ),
+                          ),
+                          Text(
+                            'Conta Corrente - ****4567',
+                            style:
+                                FlutterFlowTheme.of(context).bodySmall.override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontWeight,
+                                        fontStyle: FlutterFlowTheme.of(context)
+                                            .bodySmall
+                                            .fontStyle,
+                                      ),
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                      letterSpacing: 0.0,
+                                      fontWeight: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .fontWeight,
+                                      fontStyle: FlutterFlowTheme.of(context)
+                                          .bodySmall
+                                          .fontStyle,
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ].divide(SizedBox(width: 12.0)),
+                ),
+              ),
               FFButtonWidget(
                 onPressed: () async {
-                  context.pushNamed(MeucardapioWidget.routeName);
+                  context.pushNamed(PaginaInciialWidget.routeName);
                 },
-                text: 'Voltar ao Cardápio',
+                text: 'Continuar',
                 options: FFButtonOptions(
                   width: double.infinity,
                   height: 50.0,
@@ -162,49 +209,6 @@ class _ProdutoadicionadocomsucessoWidgetState
                   elevation: 0.0,
                   borderSide: BorderSide(
                     color: Colors.transparent,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-              ),
-              FFButtonWidget(
-                onPressed: () async {
-                  context.pushNamed(
-                    AdicionarporudotWidget.routeName,
-                    queryParameters: {
-                      'loja': serializeParam(
-                        widget.loja,
-                        ParamType.DocumentReference,
-                      ),
-                    }.withoutNulls,
-                  );
-                },
-                text: 'Adicionar Outro Produto',
-                options: FFButtonOptions(
-                  width: double.infinity,
-                  height: 50.0,
-                  padding: EdgeInsets.all(8.0),
-                  iconPadding:
-                      EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                  color: FlutterFlowTheme.of(context).secondaryBackground,
-                  textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                        font: GoogleFonts.interTight(
-                          fontWeight: FlutterFlowTheme.of(context)
-                              .titleSmall
-                              .fontWeight,
-                          fontStyle:
-                              FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                        ),
-                        color: FlutterFlowTheme.of(context).primary,
-                        letterSpacing: 0.0,
-                        fontWeight:
-                            FlutterFlowTheme.of(context).titleSmall.fontWeight,
-                        fontStyle:
-                            FlutterFlowTheme.of(context).titleSmall.fontStyle,
-                      ),
-                  elevation: 0.0,
-                  borderSide: BorderSide(
-                    color: FlutterFlowTheme.of(context).primary,
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(25.0),

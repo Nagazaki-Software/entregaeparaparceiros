@@ -172,6 +172,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: AddBankWidget.routeName,
           path: AddBankWidget.routePath,
           builder: (context, params) => AddBankWidget(),
+        ),
+        FFRoute(
+          name: ResumoDoDiaVerTudoWidget.routeName,
+          path: ResumoDoDiaVerTudoWidget.routePath,
+          builder: (context, params) => ResumoDoDiaVerTudoWidget(),
+        ),
+        FFRoute(
+          name: HorariodefuncionamentoWidget.routeName,
+          path: HorariodefuncionamentoWidget.routePath,
+          builder: (context, params) => HorariodefuncionamentoWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

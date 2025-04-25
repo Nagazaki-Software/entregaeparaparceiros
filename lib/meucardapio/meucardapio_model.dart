@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class MeucardapioModel extends FlutterFlowModel<MeucardapioWidget> {
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Firestore Query - Query a collection] action in meucardapio widget.
+  // Stores action output result for [Backend Call - Read Document] action in meucardapio widget.
   LojaRecord? lojista;
 
   @override

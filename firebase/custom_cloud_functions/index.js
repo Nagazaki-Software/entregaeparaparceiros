@@ -1,8 +1,8 @@
 const admin = require("firebase-admin/app");
 admin.initializeApp();
 
-const createStripeAccountCustom = require("./create_stripe_account_custom.js");
-exports.createStripeAccountCustom =
-  createStripeAccountCustom.createStripeAccountCustom;
-const createAccountStripe = require("./create_account_stripe.js");
-exports.createAccountStripe = createAccountStripe.createAccountStripe;
+const createAccountStripeCustom = require("./create_account_stripe_custom.js");
+exports.createAccountStripeCustom =
+  createAccountStripeCustom.createAccountStripeCustom;
+const updateKycDocuments = require("./update_kyc_documents.js");
+exports.updateKycDocuments = updateKycDocuments.updateKycDocuments;

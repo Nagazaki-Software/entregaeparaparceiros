@@ -38,5 +38,17 @@ service cloud.firestore {
       allow read: if true;
     }
 
+
+    match /loja/{parent}/pedido/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/pedido/{document} {
+      allow read: if true;
+    }
+
   }
 }

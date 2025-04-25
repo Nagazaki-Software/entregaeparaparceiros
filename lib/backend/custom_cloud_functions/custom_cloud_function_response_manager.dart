@@ -1,6 +1,6 @@
 
-class CreateStripeAccountCustomCloudFunctionCallResponse {
-  CreateStripeAccountCustomCloudFunctionCallResponse({
+class CreateAccountStripeCustomCloudFunctionCallResponse {
+  CreateAccountStripeCustomCloudFunctionCallResponse({
     this.errorCode,
     this.succeeded,
     this.jsonBody,
@@ -14,17 +14,13 @@ class CreateStripeAccountCustomCloudFunctionCallResponse {
   dynamic data;
 }
 
-class CreateAccountStripeCloudFunctionCallResponse {
-  CreateAccountStripeCloudFunctionCallResponse({
+class UpdateKycDocumentsCloudFunctionCallResponse {
+  UpdateKycDocumentsCloudFunctionCallResponse({
     this.errorCode,
     this.succeeded,
     this.jsonBody,
-    this.resultAsString,
-    this.data,
   });
   String? errorCode;
   bool? succeeded;
   dynamic jsonBody;
-  String? resultAsString;
-  dynamic data;
 }

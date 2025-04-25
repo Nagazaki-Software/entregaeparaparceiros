@@ -95,6 +95,16 @@ class LojaRecord extends FirestoreRecord {
   String get tempodepreparo => _tempodepreparo ?? '';
   bool hasTempodepreparo() => _tempodepreparo != null;
 
+  // "userDaLoja" field.
+  DocumentReference? _userDaLoja;
+  DocumentReference? get userDaLoja => _userDaLoja;
+  bool hasUserDaLoja() => _userDaLoja != null;
+
+  // "stripeAccountId" field.
+  String? _stripeAccountId;
+  String get stripeAccountId => _stripeAccountId ?? '';
+  bool hasStripeAccountId() => _stripeAccountId != null;
+
   void _initializeFields() {
     _nomedaloja = snapshotData['nomedaloja'] as String?;
     _iddaloja = snapshotData['iddaloja'] as String?;
@@ -115,6 +125,8 @@ class LojaRecord extends FirestoreRecord {
     );
     _taxadeentrega = castToType<double>(snapshotData['taxadeentrega']);
     _tempodepreparo = snapshotData['tempodepreparo'] as String?;
+    _userDaLoja = snapshotData['userDaLoja'] as DocumentReference?;
+    _stripeAccountId = snapshotData['stripeAccountId'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -166,6 +178,8 @@ Map<String, dynamic> createLojaRecordData({
   bool? recebendopedidos,
   double? taxadeentrega,
   String? tempodepreparo,
+  DocumentReference? userDaLoja,
+  String? stripeAccountId,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -184,6 +198,8 @@ Map<String, dynamic> createLojaRecordData({
       'recebendopedidos': recebendopedidos,
       'taxadeentrega': taxadeentrega,
       'tempodepreparo': tempodepreparo,
+      'userDaLoja': userDaLoja,
+      'stripeAccountId': stripeAccountId,
     }.withoutNulls,
   );
 
@@ -211,7 +227,9 @@ class LojaRecordDocumentEquality implements Equality<LojaRecord> {
         e1?.recebendopedidos == e2?.recebendopedidos &&
         listEquality.equals(e1?.lanches, e2?.lanches) &&
         e1?.taxadeentrega == e2?.taxadeentrega &&
-        e1?.tempodepreparo == e2?.tempodepreparo;
+        e1?.tempodepreparo == e2?.tempodepreparo &&
+        e1?.userDaLoja == e2?.userDaLoja &&
+        e1?.stripeAccountId == e2?.stripeAccountId;
   }
 
   @override
@@ -231,7 +249,9 @@ class LojaRecordDocumentEquality implements Equality<LojaRecord> {
         e?.recebendopedidos,
         e?.lanches,
         e?.taxadeentrega,
-        e?.tempodepreparo
+        e?.tempodepreparo,
+        e?.userDaLoja,
+        e?.stripeAccountId
       ]);
 
   @override
