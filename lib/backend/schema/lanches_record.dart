@@ -50,6 +50,26 @@ class LanchesRecord extends FirestoreRecord {
   bool get ativo => _ativo ?? false;
   bool hasAtivo() => _ativo != null;
 
+  // "location" field.
+  LatLng? _location;
+  LatLng? get location => _location;
+  bool hasLocation() => _location != null;
+
+  // "semLactose" field.
+  bool? _semLactose;
+  bool get semLactose => _semLactose ?? false;
+  bool hasSemLactose() => _semLactose != null;
+
+  // "semgluten" field.
+  bool? _semgluten;
+  bool get semgluten => _semgluten ?? false;
+  bool hasSemgluten() => _semgluten != null;
+
+  // "vegano" field.
+  bool? _vegano;
+  bool get vegano => _vegano ?? false;
+  bool hasVegano() => _vegano != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
@@ -60,6 +80,10 @@ class LanchesRecord extends FirestoreRecord {
     _valorpromocional = castToType<double>(snapshotData['valorpromocional']);
     _foto = snapshotData['foto'] as String?;
     _ativo = snapshotData['ativo'] as bool?;
+    _location = snapshotData['location'] as LatLng?;
+    _semLactose = snapshotData['semLactose'] as bool?;
+    _semgluten = snapshotData['semgluten'] as bool?;
+    _vegano = snapshotData['vegano'] as bool?;
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -109,6 +133,10 @@ Map<String, dynamic> createLanchesRecordData({
   double? valorpromocional,
   String? foto,
   bool? ativo,
+  LatLng? location,
+  bool? semLactose,
+  bool? semgluten,
+  bool? vegano,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -119,6 +147,10 @@ Map<String, dynamic> createLanchesRecordData({
       'valorpromocional': valorpromocional,
       'foto': foto,
       'ativo': ativo,
+      'location': location,
+      'semLactose': semLactose,
+      'semgluten': semgluten,
+      'vegano': vegano,
     }.withoutNulls,
   );
 
@@ -136,7 +168,11 @@ class LanchesRecordDocumentEquality implements Equality<LanchesRecord> {
         e1?.valor == e2?.valor &&
         e1?.valorpromocional == e2?.valorpromocional &&
         e1?.foto == e2?.foto &&
-        e1?.ativo == e2?.ativo;
+        e1?.ativo == e2?.ativo &&
+        e1?.location == e2?.location &&
+        e1?.semLactose == e2?.semLactose &&
+        e1?.semgluten == e2?.semgluten &&
+        e1?.vegano == e2?.vegano;
   }
 
   @override
@@ -147,7 +183,11 @@ class LanchesRecordDocumentEquality implements Equality<LanchesRecord> {
         e?.valor,
         e?.valorpromocional,
         e?.foto,
-        e?.ativo
+        e?.ativo,
+        e?.location,
+        e?.semLactose,
+        e?.semgluten,
+        e?.vegano
       ]);
 
   @override

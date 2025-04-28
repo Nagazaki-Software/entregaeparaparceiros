@@ -30,6 +30,12 @@ class AdicionarporudotModel extends FlutterFlowModel<AdicionarporudotWidget> {
   // State field(s) for DropDown widget.
   String? dropDownValue;
   FormFieldController<String>? dropDownValueController;
+  // State field(s) for Checkbox widget.
+  bool? checkboxValue1;
+  // State field(s) for Checkbox widget.
+  bool? checkboxValue2;
+  // State field(s) for Checkbox widget.
+  bool? checkboxValue3;
   // State field(s) for SwitchListTile widget.
   bool? switchListTileValue;
 
